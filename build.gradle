@@ -76,6 +76,10 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    jarJar(minecraftLibrary("libs:midi:1.0.0")) {
+        jarJar.ranged(it, "[1.0.0,)")
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {

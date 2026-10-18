@@ -1,0 +1,12 @@
+{
+  "midi": {
+    "category": "record",
+    "subtitle": "subtitle.musicplus.midi",
+    "sounds": [
+      {
+        "name": "random/orb",
+        "stream": true
+      }
+    ]
+  }
+}
