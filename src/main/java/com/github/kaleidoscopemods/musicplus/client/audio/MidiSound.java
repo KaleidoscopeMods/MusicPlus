@@ -20,12 +20,14 @@ import java.util.concurrent.CompletionException;
 
 public class MidiSound extends AbstractTickableSoundInstance {
     private final URL midiUrl;
+    private final MidiInstrument instrument;
     private volatile MidiAudioStream midiStream;
     private long lastParticleSequence;
 
-    public MidiSound(URL midiUrl, BlockPos pos) {
+    public MidiSound(URL midiUrl, BlockPos pos, MidiInstrument instrument) {
         super(ModSound.MIDI.get(), SoundSource.RECORDS, SoundInstance.createUnseededRandom());
         this.midiUrl = midiUrl;
+        this.instrument = instrument;
         this.x = pos.getX() + 0.5f;
         this.y = pos.getY() + 0.5f;
         this.z = pos.getZ() + 0.5f;
@@ -65,7 +67,7 @@ public class MidiSound extends AbstractTickableSoundInstance {
     public CompletableFuture<AudioStream> getStream(SoundBufferLibrary soundBuffers, Sound sound, boolean looping) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                MidiAudioStream stream = new MidiAudioStream(this.midiUrl);
+                MidiAudioStream stream = new MidiAudioStream(this.midiUrl, this.instrument);
                 this.midiStream = stream;
                 return stream;
             } catch (Exception e) {

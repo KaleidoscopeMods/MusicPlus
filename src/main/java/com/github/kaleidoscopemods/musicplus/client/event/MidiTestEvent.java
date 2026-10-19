@@ -2,6 +2,7 @@ package com.github.kaleidoscopemods.musicplus.client.event;
 
 import com.github.kaleidoscopemods.musicplus.MusicPlus;
 import com.github.kaleidoscopemods.musicplus.client.audio.MidiSound;
+import com.github.kaleidoscopemods.musicplus.client.audio.MidiInstrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;
@@ -31,7 +32,7 @@ public final class MidiTestEvent {
             return;
         }
 
-        URL midiUrl = FMLPaths.CONFIGDIR.get().resolve("钟.mid").toUri().toURL();
+        URL midiUrl = FMLPaths.CONFIGDIR.get().resolve("草原骑兵歌 (草原啊草原).mid").toUri().toURL();
         if (midiUrl == null) {
             MusicPlus.LOGGER.error("Could not find MIDI resource: 钟.mid");
             return;
@@ -41,7 +42,7 @@ public final class MidiTestEvent {
             currentSound.forceStop();
         }
 
-        currentSound = new MidiSound(midiUrl, event.getEntity().blockPosition());
+        currentSound = new MidiSound(midiUrl, event.getEntity().blockPosition(), MidiInstrument.DRUM_KIT);
         Minecraft.getInstance().getSoundManager().play(currentSound);
     }
 }

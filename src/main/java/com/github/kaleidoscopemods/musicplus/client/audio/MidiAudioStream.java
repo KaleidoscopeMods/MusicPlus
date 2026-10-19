@@ -70,8 +70,8 @@ public class MidiAudioStream implements AudioStream {
     private volatile boolean endOfStream;
     private volatile IOException failed;
 
-    public MidiAudioStream(URL url) throws IOException, InvalidMidiDataException, MidiUnavailableException {
-        Sequence sequence = MidiSystem.getSequence(url);
+    public MidiAudioStream(URL url, MidiInstrument instrument) throws IOException, InvalidMidiDataException, MidiUnavailableException {
+        Sequence sequence = instrument.applyTo(MidiSystem.getSequence(url));
         Sequencer sequencer = MidiSystem.getSequencer(false);
         SoftSynthesizer synth = new SoftSynthesizer();
         MidiPlayer player = new MidiPlayer();
