@@ -14,6 +14,7 @@ import org.lwjgl.BufferUtils;
 import javax.sound.midi.*;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -77,6 +78,7 @@ public class MidiAudioStream implements AudioStream {
         MidiPlayer player = new MidiPlayer();
 
         AudioInputStream rawStream = null;
+        AudioInputStream synthesizedStream = null;
         AudioInputStream midiStream = null;
 
         try {
@@ -91,18 +93,24 @@ public class MidiAudioStream implements AudioStream {
                 throw new MidiUnavailableException("Unable to load soundbank: " + soundbankUrl);
             }
 
-            AudioFormat format = rawStream.getFormat();
-            int frameSize = format.getFrameSize();
-            if (frameSize <= 0) {
-                throw new IOException("Invalid MIDI audio frame size: " + frameSize);
-            }
-
             player.setSynthesizer(synth);
             player.open();
             player.setSequence(sequence);
             player.getTransmitter().setReceiver(synth.getReceiver());
-            midiStream = new MidiAudioInputStream(rawStream, player);
+            synthesizedStream = new MidiAudioInputStream(rawStream, player);
             rawStream = null;
+
+            AudioFormat originalFormat = synthesizedStream.getFormat();
+            AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, originalFormat.getSampleRate(),
+                    16, 1, 2, originalFormat.getSampleRate(), false);
+            midiStream = AudioSystem.getAudioInputStream(targetFormat, synthesizedStream);
+            synthesizedStream = null;
+
+            AudioFormat format = midiStream.getFormat();
+            int frameSize = format.getFrameSize();
+            if (frameSize <= 0) {
+                throw new IOException("Invalid MIDI audio frame size: " + frameSize);
+            }
 
             sequencer.open();
             sequencer.setSequence(sequence);
@@ -126,6 +134,8 @@ public class MidiAudioStream implements AudioStream {
             }
             if (midiStream != null) {
                 midiStream.close();
+            } else if (synthesizedStream != null) {
+                synthesizedStream.close();
             } else {
                 player.close();
                 synth.close();

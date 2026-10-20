@@ -1,10 +1,11 @@
 package com.github.kaleidoscopemods.musicplus.client.event;
 
 import com.github.kaleidoscopemods.musicplus.MusicPlus;
-import com.github.kaleidoscopemods.musicplus.client.audio.MidiSound;
 import com.github.kaleidoscopemods.musicplus.client.audio.MidiInstrument;
+import com.github.kaleidoscopemods.musicplus.client.audio.MidiSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,7 +21,23 @@ import java.net.URL;
 public final class MidiTestEvent {
     private static MidiSound currentSound;
 
-    private MidiTestEvent() {
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.EntityInteract event) throws MalformedURLException {
+        if (!event.getLevel().isClientSide
+            || event.getHand() != InteractionHand.MAIN_HAND
+            || !event.getEntity().getItemInHand(event.getHand()).is(Items.STICK)
+            || !(event.getTarget() instanceof LivingEntity livingEntity)) {
+            return;
+        }
+
+        URL midiUrl = FMLPaths.CONFIGDIR.get().resolve("钟.mid").toUri().toURL();
+
+        if (currentSound != null) {
+            currentSound.forceStop();
+        }
+
+        currentSound = new MidiSound(midiUrl, livingEntity, MidiInstrument.PIANO);
+        Minecraft.getInstance().getSoundManager().play(currentSound);
     }
 
     @SubscribeEvent
@@ -33,16 +50,12 @@ public final class MidiTestEvent {
         }
 
         URL midiUrl = FMLPaths.CONFIGDIR.get().resolve("草原骑兵歌 (草原啊草原).mid").toUri().toURL();
-        if (midiUrl == null) {
-            MusicPlus.LOGGER.error("Could not find MIDI resource: 钟.mid");
-            return;
-        }
 
         if (currentSound != null) {
             currentSound.forceStop();
         }
 
-        currentSound = new MidiSound(midiUrl, event.getEntity().blockPosition(), MidiInstrument.DRUM_KIT);
+        currentSound = new MidiSound(midiUrl, event.getEntity(), MidiInstrument.VIOLIN);
         Minecraft.getInstance().getSoundManager().play(currentSound);
     }
 }
