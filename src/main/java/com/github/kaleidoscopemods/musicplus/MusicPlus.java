@@ -1,5 +1,6 @@
 package com.github.kaleidoscopemods.musicplus;
 
+import com.github.kaleidoscopemods.musicplus.init.ModCreativeTab;
 import com.github.kaleidoscopemods.musicplus.init.ModItem;
 import com.github.kaleidoscopemods.musicplus.init.ModSound;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,6 +19,7 @@ public class MusicPlus {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItem.ITEMS.register(eventBus);
+        ModCreativeTab.TABS.register(eventBus);
         ModSound.SOUND_EVENTS.register(eventBus);
     }
 }
