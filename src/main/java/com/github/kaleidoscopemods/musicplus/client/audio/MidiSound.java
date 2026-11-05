@@ -1,6 +1,7 @@
 package com.github.kaleidoscopemods.musicplus.client.audio;
 
 import com.github.kaleidoscopemods.musicplus.MusicPlus;
+import com.github.kaleidoscopemods.musicplus.api.mixin.ILivingEntityMidiData;
 import com.github.kaleidoscopemods.musicplus.init.ModSound;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.client.sounds.SoundBufferLibrary;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
@@ -38,7 +40,7 @@ public class MidiSound extends AbstractTickableSoundInstance {
     @Override
     public void tick() {
         if (!this.performer.isAlive()) {
-            this.stop();
+            this.forceStop();
             return;
         }
         this.x = performer.getX();
@@ -49,16 +51,17 @@ public class MidiSound extends AbstractTickableSoundInstance {
         if (stream == null) {
             return;
         }
-        MidiAudioStream.NoteState note = stream.getCurrentNote();
-        if (note == null) {
-            return;
+        @Nullable NoteState note = stream.getCurrentNote();
+        if (this.performer instanceof ILivingEntityMidiData data) {
+            data.setNoteState(note);
         }
-
-        // TODO 依据当前音符，给 performer 设置一些可用的值，从而方便做出动画
     }
 
     public void forceStop() {
         this.stop();
+        if (this.performer instanceof ILivingEntityMidiData data) {
+            data.setNoteState(null);
+        }
     }
 
     @Override

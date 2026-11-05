@@ -411,7 +411,4 @@ public class MidiAudioStream implements AudioStream {
             throw failure;
         }
     }
-
-    public record NoteState(int note, int velocity, long sequence) {
-    }
 }

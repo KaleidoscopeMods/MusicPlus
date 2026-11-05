@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 group = mod_group_id
@@ -26,6 +27,8 @@ minecraft {
             ]
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             mods {
                 "${mod_id}" {
                     source sourceSets.main
@@ -62,6 +65,15 @@ sourceSets.main.resources {
     exclude '.cache/**'
 }
 
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+
+    debug.verbose = true
+    debug.export = true
+    hotSwap = true
+}
+
 repositories {
     flatDir {
         dir 'libs'
@@ -76,6 +88,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     jarJar(minecraftLibrary("libs:midi:1.0.0")) {
         jarJar.ranged(it, "[1.0.0,)")
