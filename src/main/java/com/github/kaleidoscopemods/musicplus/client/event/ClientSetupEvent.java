@@ -1,6 +1,7 @@
 package com.github.kaleidoscopemods.musicplus.client.event;
 
 import com.github.kaleidoscopemods.musicplus.client.resources.ModelReloadListener;
+import com.github.kaleidoscopemods.musicplus.client.resources.ItemReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,5 +17,6 @@ public class ClientSetupEvent {
     @SubscribeEvent
     public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(new ModelReloadListener());
+        event.registerReloadListener(new ItemReloadListener());
     }
 }

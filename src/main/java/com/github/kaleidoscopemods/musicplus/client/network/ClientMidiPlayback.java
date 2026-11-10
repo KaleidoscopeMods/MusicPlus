@@ -1,9 +1,9 @@
 package com.github.kaleidoscopemods.musicplus.client.network;
 
 import com.github.kaleidoscopemods.musicplus.MusicPlus;
-import com.github.kaleidoscopemods.musicplus.client.audio.MidiInstrument;
 import com.github.kaleidoscopemods.musicplus.client.audio.MidiSound;
 import com.github.kaleidoscopemods.musicplus.network.packet.PlayMidiPacket;
+import com.github.kaleidoscopemods.musicplus.resources.data.MidiInstrument;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;

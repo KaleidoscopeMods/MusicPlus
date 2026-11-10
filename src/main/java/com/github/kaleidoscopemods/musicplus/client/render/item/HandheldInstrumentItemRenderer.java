@@ -1,11 +1,14 @@
 package com.github.kaleidoscopemods.musicplus.client.render.item;
 
+import com.github.kaleidoscopemods.musicplus.MusicPlus;
+import com.github.kaleidoscopemods.musicplus.client.bedrock.BedrockModel;
+import com.github.kaleidoscopemods.musicplus.client.resources.ItemReloadListener;
 import com.github.kaleidoscopemods.musicplus.client.resources.ModelReloadListener;
+import com.github.kaleidoscopemods.musicplus.client.resources.data.CustomClientItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,7 +32,7 @@ public class HandheldInstrumentItemRenderer extends BlockEntityWithoutLevelRende
             return;
         }
 
-        Model model = ModelReloadListener.DFAULT_HANDHELD_INSTRUMENT_MODEL;
+        BedrockModel model = ModelReloadListener.DFAULT_HANDHELD_INSTRUMENT_MODEL;
         ResourceLocation texture = ModelReloadListener.DFAULT_HANDHELD_INSTRUMENT_TEXTURE;
 
         poseStack.pushPose();

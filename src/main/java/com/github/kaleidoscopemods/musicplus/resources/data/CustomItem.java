@@ -1,7 +1,11 @@
 package com.github.kaleidoscopemods.musicplus.resources.data;
 
-import com.github.kaleidoscopemods.musicplus.client.audio.MidiInstrument;
+import com.google.gson.annotations.SerializedName;
 import net.minecraft.resources.ResourceLocation;
 
-public record CustomItem(int format, MidiInstrument instrument, ResourceLocation visual) {
+public record CustomItem(
+        @SerializedName("format") int format,
+        @SerializedName("midi_instrument") MidiInstrument instrument,
+        @SerializedName("visual") ResourceLocation visual
+) {
 }

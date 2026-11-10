@@ -1,5 +1,6 @@
 package com.github.kaleidoscopemods.musicplus.client.audio;
 
+import com.github.kaleidoscopemods.musicplus.resources.data.MidiInstrument;
 import com.google.common.collect.Maps;
 import com.sun.sound.extern.MidiAudioInputStream;
 import com.sun.sound.extern.MidiPlayer;
@@ -72,7 +73,7 @@ public class MidiAudioStream implements AudioStream {
     private volatile IOException failed;
 
     public MidiAudioStream(URL url, MidiInstrument instrument) throws IOException, InvalidMidiDataException, MidiUnavailableException {
-        Sequence sequence = instrument.applyTo(MidiSystem.getSequence(url));
+        Sequence sequence = MidiInstrumentMapper.apply(MidiSystem.getSequence(url), instrument);
         Sequencer sequencer = MidiSystem.getSequencer(false);
         SoftSynthesizer synth = new SoftSynthesizer();
         MidiPlayer player = new MidiPlayer();
