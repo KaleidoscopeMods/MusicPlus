@@ -1,10 +1,13 @@
 package com.github.kaleidoscopemods.musicplus.item;
 
+import com.github.kaleidoscopemods.musicplus.MusicPlus;
 import com.github.kaleidoscopemods.musicplus.client.animation.HandheldInstrumentArmPose;
 import com.github.kaleidoscopemods.musicplus.client.render.item.HandheldInstrumentItemRenderer;
 import com.github.kaleidoscopemods.musicplus.network.ModNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,8 +21,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public class HandheldInstrumentItem extends Item {
+    public static final ResourceLocation DEFAULT_ID = new ResourceLocation(MusicPlus.MOD_ID, "ce_guitar");
+    public static final String NBT_ID = "instrument_id";
+
     public HandheldInstrumentItem() {
         super(new Properties().stacksTo(1));
+    }
+
+    public static ResourceLocation getInstrumentId(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag.contains(NBT_ID, CompoundTag.TAG_STRING)) {
+            return new ResourceLocation(tag.getString(NBT_ID));
+        }
+        return DEFAULT_ID;
     }
 
     @Override

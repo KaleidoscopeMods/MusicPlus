@@ -1,7 +1,7 @@
 {
   "format_version": 1,
-  "model": "musicplus:ce_guitar",
-  "texture": "musicplus:ce_guitar",
+  "model": "musicplus:custom_instrument/models/ce_guitar.json",
+  "texture": "musicplus:custom_instrument/textures/ce_guitar.png",
   "animation": "musicplus:ce_guitar",
   "transform": {
     "third_person": {
