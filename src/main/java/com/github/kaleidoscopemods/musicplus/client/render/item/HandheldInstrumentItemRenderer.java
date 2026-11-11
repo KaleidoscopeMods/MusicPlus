@@ -1,6 +1,7 @@
 package com.github.kaleidoscopemods.musicplus.client.render.item;
 
 import com.github.kaleidoscopemods.musicplus.client.bedrock.BedrockModel;
+import com.github.kaleidoscopemods.musicplus.client.bedrock.model.GuiModel;
 import com.github.kaleidoscopemods.musicplus.client.resources.ItemReloadListener;
 import com.github.kaleidoscopemods.musicplus.client.resources.ModelReloadListener;
 import com.github.kaleidoscopemods.musicplus.client.resources.data.CustomClientItem;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class HandheldInstrumentItemRenderer extends BlockEntityWithoutLevelRenderer {
+    private static final GuiModel GUI_MODEL = new GuiModel();
+
     public HandheldInstrumentItemRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) {
         super(dispatcher, modelSet);
     }
@@ -34,13 +37,26 @@ public class HandheldInstrumentItemRenderer extends BlockEntityWithoutLevelRende
         CustomClientItem clientItem = ItemReloadListener.INSTANCES.getOrDefault(id, CustomClientItem.DEFAULT);
         BedrockModel model = ModelReloadListener.INSTANCES.getOrDefault(clientItem.model(), ModelReloadListener.DFAULT_HANDHELD_INSTRUMENT_MODEL);
 
+        // GUI 特殊渲染
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.mulPose(Axis.ZN.rotationDegrees(180));
 
-        RenderType renderType = RenderType.entityCutoutNoCull(clientItem.texture());
-        VertexConsumer buffer = bufferSource.getBuffer(renderType);
-        model.renderToBuffer(poseStack, buffer, combinedLight, combinedOverlay, 1, 1, 1, 1);
+        if (clientItem.transforms() != null) {
+            boolean isLeftHand = transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
+            clientItem.transforms().getTransform(transformType).apply(isLeftHand, poseStack);
+        }
+
+        if (transformType == ItemDisplayContext.GUI) {
+            RenderType renderType = RenderType.entityCutoutNoCull(clientItem.gui());
+            VertexConsumer buffer = bufferSource.getBuffer(renderType);
+            GUI_MODEL.renderToBuffer(poseStack, buffer, combinedLight, combinedOverlay, 1, 1, 1, 1);
+        } else {
+            RenderType renderType = RenderType.entityCutoutNoCull(clientItem.texture());
+            VertexConsumer buffer = bufferSource.getBuffer(renderType);
+            model.renderToBuffer(poseStack, buffer, combinedLight, combinedOverlay, 1, 1, 1, 1);
+        }
+
         poseStack.popPose();
     }
 }

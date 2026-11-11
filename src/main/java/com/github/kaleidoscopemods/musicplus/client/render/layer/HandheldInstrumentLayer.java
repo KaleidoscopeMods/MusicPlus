@@ -43,8 +43,8 @@ public class HandheldInstrumentLayer extends RenderLayer<AbstractClientPlayer, P
 
         poseStack.pushPose();
         getParentModel().body.translateAndRotate(poseStack);
-        if (clientItem.transform() != null) {
-            clientItem.transform().thirdPersonRightHand.apply(false, poseStack);
+        if (clientItem.transforms() != null) {
+            clientItem.transforms().thirdPersonRightHand.apply(false, poseStack);
         }
         RenderType renderType = RenderType.entityCutoutNoCull(clientItem.texture());
         model.renderToBuffer(poseStack, buffer.getBuffer(renderType), light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);

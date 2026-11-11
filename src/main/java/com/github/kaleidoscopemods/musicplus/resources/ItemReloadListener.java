@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
-import static com.github.kaleidoscopemods.musicplus.client.bedrock.BedrockModelUtil.GSON;
-
 public class ItemReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, CustomItem>> {
     public static final String ITEM_FOLDER = MusicPlus.FOLDER_NAME + "/items";
     public static final Map<ResourceLocation, CustomItem> INSTANCES = Maps.newHashMap();
@@ -25,7 +23,7 @@ public class ItemReloadListener extends SimplePreparableReloadListener<Map<Resou
         manager.listResources(ITEM_FOLDER, p -> p.getPath().endsWith(".json"))
                 .forEach((path, res) -> {
                     try (Reader reader = res.openAsReader()) {
-                        CustomItem customItem = GSON.fromJson(reader, CustomItem.class);
+                        CustomItem customItem = MusicPlus.GSON.fromJson(reader, CustomItem.class);
                         maps.put(path, customItem);
                     } catch (IOException | JsonParseException e) {
                         MusicPlus.LOGGER.warn("Failed to load resource {}", path, e);

@@ -25,7 +25,10 @@ public class ItemReloadListener extends SimplePreparableReloadListener<Map<Resou
         manager.listResources(ITEM_FOLDER, path -> path.getPath().endsWith(".json"))
                 .forEach((path, resource) -> {
                     try (Reader reader = resource.openAsReader()) {
-                        items.put(path, GSON.fromJson(reader, CustomClientItem.class));
+                        String itemPath = path.getPath();
+                        String idPath = itemPath.substring(ITEM_FOLDER.length() + 1, itemPath.length() - ".json".length());
+                        ResourceLocation id = new ResourceLocation(path.getNamespace(), idPath);
+                        items.put(id, GSON.fromJson(reader, CustomClientItem.class));
                     } catch (IOException | JsonParseException | IllegalStateException e) {
                         MusicPlus.LOGGER.warn("Failed to load client item resource {}", path, e);
                     }

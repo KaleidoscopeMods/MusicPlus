@@ -2,12 +2,31 @@
   "format_version": 1,
   "model": "musicplus:custom_instrument/models/ce_guitar.json",
   "texture": "musicplus:custom_instrument/textures/ce_guitar.png",
+  "gui": "musicplus:custom_instrument/textures/gui/ce_guitar.png",
   "animation": "musicplus:ce_guitar",
-  "transform": {
-    "third_person": {
-      "translation": [0.5, 1.5, 0.5],
-      "rotation": [0, 0, 180],
-      "scale": [1, 1, 1]
+  "transforms": {
+    "thirdperson_righthand": {
+      "rotation": [-184, -194, -103],
+      "translation": [-2, 10, -4],
+      "scale": [0.45, 0.45, 0.45]
+    },
+    "firstperson_righthand": {
+      "rotation": [-9, 155, -3],
+      "translation": [0.5, 4, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-9, 155, -3],
+      "translation": [0.5, 4, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "ground": {
+      "translation": [0, 12, 0],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "translation": [0, 16, 0],
+      "scale": [0.5, 0.5, 0.5]
     }
   }
 }

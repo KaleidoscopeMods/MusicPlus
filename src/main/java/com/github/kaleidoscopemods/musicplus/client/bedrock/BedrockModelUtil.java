@@ -5,6 +5,7 @@ import com.github.kaleidoscopemods.musicplus.client.bedrock.pojo.FaceItem;
 import com.github.kaleidoscopemods.musicplus.client.bedrock.pojo.FaceUVsItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,6 +16,7 @@ public final class BedrockModelUtil {
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .registerTypeAdapter(CubesItem.class, new CubesItem.Deserializer())
+            .registerTypeAdapter(ItemTransform.class, new ItemTransform.Deserializer())
             .registerTypeAdapter(ItemTransforms.class, new ItemTransforms.Deserializer())
             .create();
 
